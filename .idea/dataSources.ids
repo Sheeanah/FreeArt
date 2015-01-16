@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="MySQL - freeart@localhost" uuid="28cc852f-118f-4cc4-8315-968733591e85">
+    <database-info product="MySQL" version="5.6.17" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower"/>
+    <schema name="" catalog="freeart"/>
+    <table name="categorie" schema="" catalog="freeart" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="label" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_image_cat" table="image" schema="" catalog="freeart" columns="categorie"/>
+    </table>
+    <table name="image" schema="" catalog="freeart" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="image" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <column name="dateajout" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <column name="auteur" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="titre" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="categorie" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="FK_image_auteur" columns="auteur" ref-table="user" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="FK_image_cat" columns="categorie" ref-table="categorie" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <exported-key name="FK_imagetag_image" table="imagetag" schema="" catalog="freeart" columns="imageid"/>
+      <index name="fk_imageauteur" unique="true" columns="auteur"/>
+      <index name="fk_imagecat" unique="true" columns="categorie"/>
+    </table>
+    <table name="imagetag" schema="" catalog="freeart" type="TABLE">
+      <column name="imageid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="tagid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <primary-key name="PRIMARY" columns="imageid,tagid"/>
+      <foreign-key name="FK_imagetag_image" columns="imageid" ref-table="image" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="FK_imagetag_tag" columns="tagid" ref-table="tag" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <index name="FK_imagetag_tag" unique="false" columns="tagid"/>
+    </table>
+    <table name="tag" schema="" catalog="freeart" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="label" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_imagetag_tag" table="imagetag" schema="" catalog="freeart" columns="tagid"/>
+    </table>
+    <table name="user" schema="" catalog="freeart" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="login" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
+      <column name="mdp" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
+      <column name="dateinscri" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="FK_image_auteur" table="image" schema="" catalog="freeart" columns="auteur"/>
+    </table>
+  </data-source>
+</component>
