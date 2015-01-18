@@ -18,9 +18,7 @@ public class Home extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        response.setContentType("text/html");
-        out.println("<h2>Bienvenue Chez Bio !</h2>");
+        this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward( request, response ); //On redurige vers la page d'accueil
 
     }
 }
