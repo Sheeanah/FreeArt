@@ -51,21 +51,31 @@
         <li><a href="#"><span class="glyphicon glyphicon-th"></span> Catégories</a></li>
 
       </ul>
-      <form class="navbar-form navbar-left" method="post" action="/Connection/login.jsp">
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-            <input type="text" class="form-control" placeholder="Login">
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="input-group">
-            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-            <input type="password" class="form-control" placeholder="Mot de passe">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Se connecter</button>
+      <c:choose>
+        <c:when test="${empty sessionScope.User}">
+          <form class="navbar-form navbar-left" method="post" action="/Home">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                <input type="text" class="form-control" placeholder="Login" name="userName">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                <input type="password" class="form-control" placeholder="Mot de passe" name="userPassword">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Se connecter</button>
+          </form>
+        </c:when>
+        <c:otherwise>
+      <form class="navbar-form navbar-left" method="post" action="/Deconnect">
+        <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-off"></span> ${sessionScope.User.login} (se deconnecter) </button>
       </form>
+        </c:otherwise>
+      </c:choose>
+
       <form class="navbar-form navbar-right" role="search" method="post" action="/Recherche/search.jsp">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Rechercher">
