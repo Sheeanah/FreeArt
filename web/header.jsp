@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
   <title>FreeArt</title>
@@ -37,14 +38,35 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/Home/index.jsp">Accueil</a></li>
-        <li><a href="#">Catégories</a></li>
+        <li><a href="/Home"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+        <c:choose>
+          <c:when test="${!empty sessionScope.User}">
+            <li><a><span class="glyphicon glyphicon-upload"></span> Ajouter une image</a></li>
+          </c:when>
+          <c:otherwise>
+            <li><a href="/CreateUser"><span class="glyphicon glyphicon-plus"></span> Créer un compte</a></li>
+          </c:otherwise>
+        </c:choose>
+
+        <li><a href="#"><span class="glyphicon glyphicon-th"></span> Catégories</a></li>
 
       </ul>
-      <ul class="nav navbar-nav navbar-left">
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Se connecter</a></li>
-      </ul>
-      <form class="navbar-form navbar-right" role="search" method="post" action="/Recherche/index.jsp">
+      <form class="navbar-form navbar-left" method="post" action="/Connection/login.jsp">
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+            <input type="text" class="form-control" placeholder="Login">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input type="password" class="form-control" placeholder="Mot de passe">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Se connecter</button>
+      </form>
+      <form class="navbar-form navbar-right" role="search" method="post" action="/Recherche/search.jsp">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Rechercher">
         </div>
