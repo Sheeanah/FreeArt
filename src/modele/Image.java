@@ -16,6 +16,8 @@ public class Image {
     private Date dateajout;
     private String titre;
     private String description;
+    private int auteur;
+    private int categorie;
 
     @Id
     @Column(name = "id")
@@ -91,5 +93,25 @@ public class Image {
         result = 31 * result + (titre != null ? titre.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "auteur")
+    public int getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(int auteur) {
+        this.auteur = auteur;
+    }
+
+    @Basic
+    @Column(name = "categorie")
+    public int getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(int categorie) {
+        this.categorie = categorie;
     }
 }

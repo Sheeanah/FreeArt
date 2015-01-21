@@ -62,7 +62,7 @@ public class UserManager {
 
     }
 
-    public static boolean Connect(User u)
+    public static User Connect(User u)
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
@@ -70,7 +70,7 @@ public class UserManager {
 
         session.beginTransaction();
 
-        Query q = session.createQuery("select login from User where login = :ulogin and mdp = :umdp");
+        Query q = session.createQuery("from User where login = :ulogin and mdp = :umdp");
 
         q.setParameter("ulogin", u.getLogin());
         q.setParameter("umdp",u.getMdp());
@@ -80,11 +80,11 @@ public class UserManager {
         session.getTransaction().commit();
         if(user.size() == 0)
         {
-            return false;
+            return null;
         }
         else
         {
-            return true;
+            return (User)user.get(0);
         }
     }
 

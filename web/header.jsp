@@ -32,7 +32,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Free Art</a>
+      <a class="navbar-brand" href="/Home">Free Art</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -41,7 +41,7 @@
         <li><a href="/Home"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
         <c:choose>
           <c:when test="${!empty sessionScope.User}">
-            <li><a><span class="glyphicon glyphicon-upload"></span> Ajouter une image</a></li>
+            <li><a href="/Upload"><span class="glyphicon glyphicon-upload"></span> Ajouter une image</a></li>
           </c:when>
           <c:otherwise>
             <li><a href="/CreateUser"><span class="glyphicon glyphicon-plus"></span> Créer un compte</a></li>

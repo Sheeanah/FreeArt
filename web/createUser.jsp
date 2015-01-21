@@ -54,7 +54,7 @@
         <input type="text" name="userName" class="form-control input-sm" placeholder="Login" />
           <p class="error">${ messageErrorLogin }</p>
         </br>
-        <input type="text" name="userPassword" class="form-control input-sm" placeholder="Mot de passe" />
+        <input type="password" name="userPassword" class="form-control input-sm" placeholder="Mot de passe" />
           <p class="error">${ messageErrorPwd }</p>
         </br>
         <div class="wrapper">

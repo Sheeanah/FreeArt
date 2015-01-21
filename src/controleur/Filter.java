@@ -15,6 +15,8 @@ public class Filter implements javax.servlet.Filter {
     public void destroy() {
     }
 
+    //Filtre empêchant un utilisateur connecté de créer un utilisateur
+
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;

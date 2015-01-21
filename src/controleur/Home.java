@@ -1,6 +1,6 @@
 package controleur;
 
-import modele.User;
+import modele.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 /**
  * Created by Dorian on 16/01/2015.
@@ -24,17 +25,25 @@ public class Home extends HttpServlet {
             User u = new User();
             u.setLogin(login);
             u.setMdp(pwd);
-            if(UserManager.Connect(u))
+            User connectedUser = UserManager.Connect(u);
+            if(connectedUser != null)
             {
                 HttpSession session = request.getSession(true);
-                session.setAttribute("User", u);
+                session.setAttribute("User", connectedUser);
             }
         }
-
+        List categ = CategorieManager.getAll();
+        request.setAttribute("categories",(List<Categorie>) categ);
+        List img = ImageManager.getAll();
+        request.setAttribute("images",(List<modele.Image>) img);
         this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward(request, response); //On redurige vers la page d'accueil
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List categ = CategorieManager.getAll();
+        request.setAttribute("categories",(List<Categorie>) categ);
+        List img = ImageManager.getAll();
+        request.setAttribute("images",(List<modele.Image>) img);
         this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward(request, response); //On redurige vers la page d'accueil
 
     }
