@@ -88,4 +88,18 @@ public class UserManager {
         }
     }
 
+    public static List<User> getAll()
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
+
+        List users = session
+                .createQuery("from User ").list(); // Eager fetch the collection so we can use it detached
+
+        return users;
+    }
+
 }

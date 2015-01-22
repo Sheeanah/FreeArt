@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,65 @@ public class CategorieManager {
                 .createQuery("from Categorie ").list(); // Eager fetch the collection so we can use it detached
 
         return categories;
+    }
+
+    public static boolean Exists(Categorie c)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
+
+        List categories = session
+                .createQuery("select label from Categorie where label = :clabel")
+                .setParameter("clabel", c.getLabel())
+                .list();
+
+        session.getTransaction().commit();
+        if(categories.size() == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public static int Create(Categorie c)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
+
+
+
+        Integer id = (Integer) session.save(c);
+
+        session.getTransaction().commit();
+
+        return id.intValue();
+    }
+
+    public static Categorie GetByName(String name)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.getCurrentSession();
+
+        session.beginTransaction();
+
+        List categories = session
+                .createQuery("from Categorie where label = :clabel")
+                .setParameter("clabel", name)
+                .list();
+
+        session.getTransaction().commit();
+
+        return (Categorie)categories.get(0);
     }
 
 }

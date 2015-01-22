@@ -12,6 +12,14 @@
         <filter-name>Filter</filter-name>
         <url-pattern>/CreateUser</url-pattern>
     </filter-mapping>
+    <filter>
+        <filter-name>FilterLoadCategories</filter-name>
+        <filter-class>controleur.FilterLoadCategories</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FilterLoadCategories</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
     <servlet>
         <servlet-name>Upload</servlet-name>

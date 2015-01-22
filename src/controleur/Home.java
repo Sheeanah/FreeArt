@@ -32,6 +32,8 @@ public class Home extends HttpServlet {
                 session.setAttribute("User", connectedUser);
             }
         }
+        List users = UserManager.getAll();
+        request.setAttribute("users",(List<User>) users);
         List categ = CategorieManager.getAll();
         request.setAttribute("categories",(List<Categorie>) categ);
         List img = ImageManager.getAll();
@@ -40,6 +42,8 @@ public class Home extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List users = UserManager.getAll();
+        request.setAttribute("users",(List<User>) users);
         List categ = CategorieManager.getAll();
         request.setAttribute("categories",(List<Categorie>) categ);
         List img = ImageManager.getAll();

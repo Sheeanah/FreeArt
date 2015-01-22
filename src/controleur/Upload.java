@@ -39,15 +39,23 @@ public class Upload extends HttpServlet {
         String chemin = this.getServletConfig().getInitParameter( CHEMIN );
         String tag = request.getParameter("tag");
         String categorie = request.getParameter("categorie");
+        String addCategorie = request.getParameter("addCategorie");
         String description = request.getParameter("description");
         String titre = request.getParameter("titre");
         User currentUser = (User) request.getSession().getAttribute("User");
         String messageErreur = "";
-        if(tag.isEmpty() || categorie.isEmpty() || description.isEmpty() || titre.isEmpty()) {
+        if(tag.isEmpty()  || description.isEmpty() || titre.isEmpty()) {
             messageErreur = "Tous les chmas doivent être remplis";
         }
         else
         {
+            if(!addCategorie.isEmpty()) //Si la personne veut ajouter une catégorie
+            {
+                Categorie c = new Categorie();
+                c.setLabel(addCategorie);
+                if(CategorieManager.Exists(c));
+            }
+
         /*
          * Les données reçues sont multipart, on doit donc utiliser la méthode
          * getPart() pour traiter le champ d'envoi de fichiers.
@@ -83,11 +91,32 @@ public class Upload extends HttpServlet {
                 else
                 {
 
+                    boolean enregistrer = true;
+
+                    if(!addCategorie.isEmpty()) //Si la personne veut ajouter une catégorie
+                    {
+                        Categorie c = new Categorie();
+                        c.setLabel(addCategorie);
+                        if(CategorieManager.Exists(c))
+                        {
+                            enregistrer = false;
+                        }
+                        else
+                        {
+                            CategorieManager.Create(c); //On créé la nouvelle catégorie
+                            Categorie categ = CategorieManager.GetByName(c.getLabel());
+                            categorie = ""+categ.getId();
+
+                        }
+                    }
+
+                    if(enregistrer)
+                    {
                         //On enregistre le fichier
 
                         ecrireFichier(part,nomFichier,chemin);
 
-                    //On l'enregistre dans la base de données
+                        //On l'enregistre dans la base de données
                         modele.Image image = new modele.Image();
                         image.setImage("/Image/"+nomFichier);
                         image.setDateajout(new Date(System.currentTimeMillis()));
@@ -96,9 +125,11 @@ public class Upload extends HttpServlet {
                         image.setCategorie(Integer.parseInt(categorie));
                         image.setDescription(description);
                         ImageManager.save(image);
-
-
-
+                    }
+                    else
+                    {
+                        messageErreur = "La catégorie existe déjà veuillez recommencer";
+                    }
                 }
             }
         }

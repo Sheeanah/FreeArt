@@ -48,7 +48,19 @@
           </c:otherwise>
         </c:choose>
 
-        <li><a href="#"><span class="glyphicon glyphicon-th"></span> Catégories</a></li>
+
+
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-th"></span> Catégories <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+
+            <c:forEach items="${ categoriesMenu }" var="categorie">
+              <li><a href="#">${ categorie.label }</a></li>
+            </c:forEach>
+
+          </ul>
+        </li>
 
       </ul>
       <c:choose>
