@@ -1,6 +1,7 @@
 package controleur;
 
 import modele.Categorie;
+import modele.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -24,6 +25,8 @@ public class FilterLoadCategories implements javax.servlet.Filter {
 
         List categories = CategorieManager.getAll();
         request.setAttribute("categoriesMenu",(List<Categorie>) categories);
+        List users = UserManager.getAll();
+        request.setAttribute("users",(List<User>) users);
 
         chain.doFilter(req, resp);
     }

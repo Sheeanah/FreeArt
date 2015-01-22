@@ -18,7 +18,7 @@ public class UserManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
@@ -43,7 +43,7 @@ public class UserManager {
         try {
             SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-            Session session = sessionFactory.getCurrentSession();
+            Session session = sessionFactory.openSession();
 
             session.beginTransaction();
 
@@ -52,6 +52,10 @@ public class UserManager {
             session.save(u);
 
             session.getTransaction().commit();
+            session.close();
+            if ( sessionFactory != null ) {
+                sessionFactory.close();
+            }
 
             return true;
         }
@@ -66,7 +70,7 @@ public class UserManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
@@ -78,6 +82,10 @@ public class UserManager {
         List user = q.list();
 
         session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
         if(user.size() == 0)
         {
             return null;
@@ -92,13 +100,16 @@ public class UserManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
         List users = session
                 .createQuery("from User ").list(); // Eager fetch the collection so we can use it detached
-
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
         return users;
     }
 

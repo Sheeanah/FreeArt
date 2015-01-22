@@ -11,7 +11,7 @@
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="label" sqlType="VARCHAR" precision="20" scale="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="FK_image_cat" table="image" schema="" catalog="freeart" columns="categorie"/>
+      <exported-key name="categorie" table="image" schema="" catalog="freeart" columns="categorie"/>
     </table>
     <table name="image" schema="" catalog="freeart" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -22,11 +22,11 @@
       <column name="categorie" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="false" jdbcType="-1"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="FK_image_auteur" columns="auteur" ref-table="user" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
-      <foreign-key name="FK_image_cat" columns="categorie" ref-table="categorie" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="auteur" columns="auteur" ref-table="user" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
+      <foreign-key name="categorie" columns="categorie" ref-table="categorie" ref-schema="" ref-catalog="freeart" ref-columns="id" update-rule="0" delete-rule="0" deferrability="2"/>
       <exported-key name="FK_imagetag_image" table="imagetag" schema="" catalog="freeart" columns="imageid"/>
-      <index name="fk_imageauteur" unique="true" columns="auteur"/>
-      <index name="fk_imagecat" unique="true" columns="categorie"/>
+      <index name="auteur_idx" unique="false" columns="auteur"/>
+      <index name="categorie_idx" unique="false" columns="categorie"/>
     </table>
     <table name="imagetag" schema="" catalog="freeart" type="TABLE">
       <column name="imageid" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
@@ -48,7 +48,7 @@
       <column name="mdp" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="dateinscri" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <exported-key name="FK_image_auteur" table="image" schema="" catalog="freeart" columns="auteur"/>
+      <exported-key name="auteur" table="image" schema="" catalog="freeart" columns="auteur"/>
     </table>
   </data-source>
 </component>

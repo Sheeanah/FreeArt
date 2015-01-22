@@ -43,6 +43,11 @@
             <param-value>/fichiers/</param-value>
         </init-param>
     </servlet>
+    <servlet>
+        <servlet-name>CategorieContent</servlet-name>
+        <servlet-class>controleur.CategorieContent</servlet-class>
+
+    </servlet>
     <servlet-mapping>
         <servlet-name>Image</servlet-name>
         <url-pattern>/Image/*</url-pattern>
@@ -50,6 +55,10 @@
     <servlet-mapping>
         <servlet-name>Upload</servlet-name>
         <url-pattern>/Upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategorieContent</servlet-name>
+        <url-pattern>/Categorie/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

@@ -10,6 +10,20 @@
 <%@include file="header.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
+<style>
+  .img
+  {
+    width: 250px;
+    height: 300px;
+    background-size: auto 300px;
+    background-position: center top;
+    background-repeat: no-repeat;
+    margin:auto;
+    cursor: pointer;
+  }
+
+
+</style>
 
 
 <div class="container">
@@ -23,22 +37,23 @@
         <div class="col-lg-3 col-md-4 col-xs-6 thumb">
           <div class="thumbnail">
 
-              <img src="${pageContext.request.contextPath}${ item.image }" class = "img img-responsive" width="300" height="300"/>
+            <div onclick="location.href='/ImageViewer/${item.id}';" class="img" style="background-image: url(${pageContext.request.contextPath}${ item.image });">
+
+            </div>
 
             <div class="caption">
               <h3>${ item.titre }</h3>
               <p>${ item.description }</p>
-              <p>Image ajoutée par :
+              <c:forEach items="${ users }" var="auteur">
+                <c:if test="${ item.auteur == auteur.id}">
 
-            <c:forEach items="${ users }" var="auteur">
-              <c:if test="${ item.auteur == auteur.id}">
+                  <p>Image ajoutée par : <a href="#" class="btn btn-primary" role="button">${ auteur.login }</a></p>
 
-                <a href="#" class="btn btn-primary" role="button">${ auteur.login }</a>
+                </c:if>
+              </c:forEach>
 
-              </c:if>
-            </c:forEach>
-
-                <a href="#" class="btn btn-default" role="button">Les tags maggle</a></p>
+              <p><a href="#" class="btn btn-default" role="button">Les tags maggle</a></p>
+              <p><a href="#" class="btn btn-default" role="button">Ajouter au panier</a></p>
 
             </div>
           </div>

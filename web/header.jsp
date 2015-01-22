@@ -56,7 +56,7 @@
           <ul class="dropdown-menu" role="menu">
 
             <c:forEach items="${ categoriesMenu }" var="categorie">
-              <li><a href="#">${ categorie.label }</a></li>
+              <li><a href="/Categorie/${ categorie.label }">${ categorie.label }</a></li>
             </c:forEach>
 
           </ul>

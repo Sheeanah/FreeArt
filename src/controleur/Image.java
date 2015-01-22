@@ -55,16 +55,5 @@ public class Image extends HttpServlet {
 
         // Write image content to response.
         Files.copy(fichier.toPath(), response.getOutputStream());
-
-
-
-
-
-
-
-
-
-
-
     }
 }

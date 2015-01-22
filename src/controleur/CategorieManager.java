@@ -17,13 +17,16 @@ public class CategorieManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
         List categories = session
                 .createQuery("from Categorie ").list(); // Eager fetch the collection so we can use it detached
-
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
         return categories;
     }
 
@@ -31,7 +34,7 @@ public class CategorieManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
@@ -41,6 +44,10 @@ public class CategorieManager {
                 .list();
 
         session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
         if(categories.size() == 0)
         {
             return false;
@@ -55,7 +62,7 @@ public class CategorieManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
@@ -64,6 +71,10 @@ public class CategorieManager {
         Integer id = (Integer) session.save(c);
 
         session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
 
         return id.intValue();
     }
@@ -72,7 +83,7 @@ public class CategorieManager {
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
 
         session.beginTransaction();
 
@@ -82,6 +93,10 @@ public class CategorieManager {
                 .list();
 
         session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
 
         return (Categorie)categories.get(0);
     }
