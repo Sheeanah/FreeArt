@@ -113,4 +113,32 @@ public class UserManager {
         return users;
     }
 
+    public static User GetById(int id)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List users = session
+                .createQuery("from User where id = :id")
+                .setParameter("id", id)
+                .list();
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        if(users.size() > 0)
+        {
+            return (User)users.get(0);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 }

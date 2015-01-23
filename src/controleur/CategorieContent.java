@@ -1,6 +1,8 @@
 package controleur;
 
 import modele.Categorie;
+import modele.Imagetag;
+import modele.Tag;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -102,6 +104,10 @@ public class CategorieContent extends HttpServlet {
         request.setAttribute("debug",debug);
         request.setAttribute("currentPage",pageDemandee);
         request.setAttribute("currentCategorie",categorie_label);
+        List imgtag = TagManager.GetAllAssociation();
+        request.setAttribute("imagetag",(List<Imagetag>) imgtag);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
         this.getServletContext().getRequestDispatcher( "/imgbycategorie.jsp" ).forward(request, response);
 
     }

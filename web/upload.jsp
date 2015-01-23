@@ -15,7 +15,7 @@
         <fieldset>
           <legend>Ajouter une image</legend>
           <div class="form-group">
-            <label for="tag">Tag</label>
+            <label for="tag">Tag (séparés par des ;)</label>
             <input type="text" id="tag" name="tag" value="" class="form-control"/>
           </div>
           <div class="form-group">

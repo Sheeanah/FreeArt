@@ -1,36 +1,53 @@
 package controleur;
 
-import modele.Categorie;
+import modele.Imagetag;
+import modele.Tag;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.sql.Date;
 import java.util.List;
 
 /**
- * Created by Kylian on 20/01/2015.
+ * Created by Kylian on 23/01/2015.
  */
-public class CategorieManager {
+public class TagManager {
 
-    public static List<Categorie> getAll()
+    public static Tag Create(Tag t)
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
         Session session = sessionFactory.openSession();
+        if(!Exists(t)) {
+
+
+            session.beginTransaction();
+
+            session.save(t);
+
+            session.getTransaction().commit();
+            session.close();
+        }
+        session = sessionFactory.openSession();
 
         session.beginTransaction();
 
-        List categories = session
-                .createQuery("from Categorie ").list(); // Eager fetch the collection so we can use it detached
+        t = (Tag)session
+                .createQuery("from Tag where label = :label")
+                .setParameter("label", t.getLabel())
+                .list().get(0);
+
+        session.getTransaction().commit();
         session.close();
+
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }
-        return categories;
+        //Fait un nouveau tag et renvoi son id
+        return t;
     }
 
-    public static boolean Exists(Categorie c)
+    public static boolean Exists(Tag tag)
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
@@ -38,17 +55,17 @@ public class CategorieManager {
 
         session.beginTransaction();
 
-        List categories = session
-                .createQuery("select label from Categorie where label = :clabel")
-                .setParameter("clabel", c.getLabel())
-                .list();
+        List tags = session
+                .createQuery("from Tag where label = :label")
+                .setParameter("label", tag.getLabel())
+                .list(); // Eager fetch the collection so we can use it detached
 
         session.getTransaction().commit();
         session.close();
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }
-        if(categories.size() == 0)
+        if(tags.size() == 0)
         {
             return false;
         }
@@ -58,17 +75,15 @@ public class CategorieManager {
         }
     }
 
-    public static int Create(Categorie c)
-    {
+
+    public static void AssociateToImage(Imagetag itag) {
+
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
         Session session = sessionFactory.openSession();
 
         session.beginTransaction();
-
-
-
-        Integer id = (Integer) session.save(c);
+        session.save(itag);
 
         session.getTransaction().commit();
         session.close();
@@ -76,10 +91,9 @@ public class CategorieManager {
             sessionFactory.close();
         }
 
-        return id.intValue();
     }
 
-    public static Categorie GetByName(String name)
+    public static List<Imagetag> GetAllAssociation()
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
@@ -87,21 +101,16 @@ public class CategorieManager {
 
         session.beginTransaction();
 
-        List categories = session
-                .createQuery("from Categorie where label = :clabel")
-                .setParameter("clabel", name)
-                .list();
-
-        session.getTransaction().commit();
+        List imagetag = session
+                .createQuery("from Imagetag ").list(); // Eager fetch the collection so we can use it detached
         session.close();
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }
-
-        return (Categorie)categories.get(0);
+        return imagetag;
     }
 
-    public static Categorie GetById(int id)
+    public static List<Tag> getAllTag()
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
@@ -109,24 +118,12 @@ public class CategorieManager {
 
         session.beginTransaction();
 
-        List categories = session
-                .createQuery("from Categorie where id = :id")
-                .setParameter("id", id)
-                .list();
-
-        session.getTransaction().commit();
+        List tag = session
+                .createQuery("from Tag ").list(); // Eager fetch the collection so we can use it detached
         session.close();
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }
-        if(categories.size() > 0)
-        {
-            return (Categorie)categories.get(0);
-        }
-        else
-        {
-            return null;
-        }
+        return tag;
     }
-
 }

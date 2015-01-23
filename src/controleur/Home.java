@@ -38,6 +38,11 @@ public class Home extends HttpServlet {
         request.setAttribute("categories",(List<Categorie>) categ);
         List img = ImageManager.getAll();
         request.setAttribute("images",(List<modele.Image>) img);
+        List imgtag = TagManager.GetAllAssociation();
+        request.setAttribute("imagetag",(List<Imagetag>) imgtag);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
+
         this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward(request, response); //On redurige vers la page d'accueil
     }
 
@@ -48,6 +53,10 @@ public class Home extends HttpServlet {
         request.setAttribute("categories",(List<Categorie>) categ);
         List img = ImageManager.getAll();
         request.setAttribute("images",(List<modele.Image>) img);
+        List imgtag = TagManager.GetAllAssociation();
+        request.setAttribute("imagetag",(List<Imagetag>) imgtag);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
         this.getServletContext().getRequestDispatcher( "/index.jsp" ).forward(request, response); //On redurige vers la page d'accueil
 
     }

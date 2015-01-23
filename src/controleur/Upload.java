@@ -2,6 +2,8 @@ package controleur;
 
 import eu.medsea.mimeutil.MimeUtil;
 import modele.Categorie;
+import modele.Imagetag;
+import modele.Tag;
 import modele.User;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -44,8 +46,24 @@ public class Upload extends HttpServlet {
         String titre = request.getParameter("titre");
         User currentUser = (User) request.getSession().getAttribute("User");
         String messageErreur = "";
-        if(tag.isEmpty()  || description.isEmpty() || titre.isEmpty()) {
-            messageErreur = "Tous les chmas doivent être remplis";
+
+        String tags[] = tag.split(";");
+
+        boolean tagok = true;
+        if(tags.length == 0)
+        {
+            tagok = false;
+        }
+        for(String s : tags)
+        {
+            if(s.isEmpty())
+            {
+                tagok=false;
+            }
+        }
+
+        if(!tagok  || description.isEmpty() || titre.isEmpty()) {
+            messageErreur = "Tous les champs doivent être remplis";
         }
         else
         {
@@ -110,21 +128,54 @@ public class Upload extends HttpServlet {
                         }
                     }
 
+
+
                     if(enregistrer)
                     {
-                        //On enregistre le fichier
+                        modele.Image temp = new modele.Image();
+                        temp.setImage("/Image/"+nomFichier);
 
-                        ecrireFichier(part,nomFichier,chemin);
+                        if(ImageManager.Exists(temp))
+                        {
+                            messageErreur = "L'image existe déjà veuillez renommer le fichier";
+                        }
+                        else
+                        {
+                            //On enregistre le fichier
 
-                        //On l'enregistre dans la base de données
-                        modele.Image image = new modele.Image();
-                        image.setImage("/Image/"+nomFichier);
-                        image.setDateajout(new Date(System.currentTimeMillis()));
-                        image.setAuteur(currentUser.getId());
-                        image.setTitre(titre);
-                        image.setCategorie(Integer.parseInt(categorie));
-                        image.setDescription(description);
-                        ImageManager.save(image);
+                            ecrireFichier(part,nomFichier,chemin);
+
+                            //On l'enregistre dans la base de données
+                            modele.Image image = new modele.Image();
+                            image.setImage("/Image/"+nomFichier);
+                            image.setDateajout(new Date(System.currentTimeMillis()));
+                            image.setAuteur(currentUser.getId());
+                            image.setTitre(titre);
+                            image.setCategorie(Integer.parseInt(categorie));
+                            image.setDescription(description);
+                            modele.Image lastImage = ImageManager.save(image);
+
+
+
+                            //Gestion des tags
+                            int id_image_ajoutee = lastImage.getId();
+                            for(String s : tags)
+                            {
+                                Tag t = new Tag();
+                                t.setLabel(s);
+                                int tag_id = TagManager.Create(t).getId(); //Renvoi l'id du nouveau tag ou de l'existant tavu
+                                //On associe l'id de l'image a l'id du tag
+                                Imagetag itag = new Imagetag();
+                                itag.setImageid(id_image_ajoutee);
+                                itag.setTagid(tag_id);
+                                TagManager.AssociateToImage(itag);
+
+
+                            }
+
+                        }
+
+
                     }
                     else
                     {

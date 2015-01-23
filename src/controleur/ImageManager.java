@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class ImageManager {
 
-    public static void save(modele.Image i)
+    public static modele.Image save(modele.Image i)
     {
 
             SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
@@ -22,15 +22,54 @@ public class ImageManager {
             Session session = sessionFactory.openSession();
 
             session.beginTransaction();
-
-
-
             session.save(i);
 
             session.getTransaction().commit();
         session.close();
+         session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        i = (modele.Image)session
+            .createQuery("from Image where image = :image")
+            .setParameter("image", i.getImage())
+            .list().get(0);
+
+        session.getTransaction().commit();
+        session.close();
+
         if ( sessionFactory != null ) {
             sessionFactory.close();
+        }
+
+        return i;
+    }
+
+    public static boolean Exists(Image i)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List images = session
+                .createQuery("from Image where image = :image")
+                .setParameter("image", i.getImage())
+                .list(); // Eager fetch the collection so we can use it detached
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        if(images.size() == 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -70,6 +109,34 @@ public class ImageManager {
             sessionFactory.close();
         }
         return images;
+    }
+
+    public static modele.Image GetById(int id)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List images = session
+                .createQuery("from Image where id = :id")
+                .setParameter("id", id)
+                .list();
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        if(images.size() > 0)
+        {
+            return (modele.Image)images.get(0);
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }
