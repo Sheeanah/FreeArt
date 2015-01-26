@@ -38,7 +38,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li><a href="/Home"><span class="glyphicon glyphicon-home"></span> Accueil</a></li>
+        <li><a href="/Panier"><span class="glyphicon glyphicon-shopping-cart"></span> <span class="badge">${elem_panier}</span></a></li>
         <c:choose>
           <c:when test="${!empty sessionScope.User}">
             <li><a href="/Upload"><span class="glyphicon glyphicon-upload"></span> Ajouter une image</a></li>
