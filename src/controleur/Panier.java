@@ -217,6 +217,7 @@ public class Panier extends HttpServlet {
         }
         else
         {
+
             this.getServletContext().getRequestDispatcher( "/panier.jsp" ).forward(request, response);
         }
 

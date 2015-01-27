@@ -111,6 +111,27 @@ public class ImageManager {
         return images;
     }
 
+    public static List<modele.Image> GetByAuteur(int auteur)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List images = session
+                .createQuery("from Image where auteur = :iauteur")
+                .setParameter("iauteur", auteur)
+                .list();
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        return images;
+    }
+
     public static modele.Image GetById(int id)
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

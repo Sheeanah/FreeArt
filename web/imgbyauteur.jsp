@@ -25,15 +25,7 @@
 
 </style>
 
-<c:if test="${ elem_panier eq 0  }">
-<p class="well">Le panier est vide</p>
-</c:if>
-
-
 <div class="container">
-  <c:if test="${ elem_panier > 0  }">
-    <div class="row"><a href="/Download" class="btn btn-success btn-block">Télécharger le contenu du panier</a></div><br>
-  </c:if>
   <c:set var="cpt" value="4" scope="page"/>
   <c:set var="pagination" value="0" scope="page"/>
   <c:forEach items="${ images }" var="item">
@@ -52,7 +44,6 @@
           <div class="caption">
             <h3>${ item.titre }</h3>
             <p>${ item.description }</p>
-
 
             <c:forEach items="${ categoriesMenu }" var="categ">
               <c:if test="${ item.categorie == categ.id}">
@@ -80,8 +71,8 @@
 
             <p>
             <form method="post">
-              <input type="hidden" value="${item.id}" name="image_id_panier_remove" id="image_id_panier_remove">
-              <input type="submit" class="btn btn-danger" role="button" value="Enlever du panier">
+              <input type="hidden" value="${item.id}" name="image_id_panier" id="image_id_panier">
+              <input type="submit" class="btn btn-default" role="button" value="Ajouter au panier">
             </form>
 
             </p>
@@ -111,7 +102,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Panier/${currentPage - 1}" aria-label="Previous">
+          <a href="/Categorie/${currentAuteur}/${currentPage - 1}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -124,7 +115,7 @@
           <li class="active"><a href="#">${i}</a></li>
         </c:when>
         <c:otherwise>
-          <li><a href="/Panier/${i}">${i}</a></li>
+          <li><a href="/Categorie/${currentAuteur}/${i}">${i}</a></li>
         </c:otherwise>
       </c:choose>
     </c:forEach>
@@ -138,7 +129,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Panier/${currentPage + 1}" aria-label="Next">
+          <a href="/Categorie/${currentAuteur}/${currentPage + 1}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

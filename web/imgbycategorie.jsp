@@ -49,7 +49,7 @@
           <c:forEach items="${ users }" var="auteur">
             <c:if test="${ item.auteur == auteur.id}">
 
-        <p>Image ajoutée par : <a href="#" class="btn btn-primary" role="button">${ auteur.login }</a></p>
+        <p>Image ajoutée par : <a href="/Auteur/${ auteur.login }" class="btn btn-primary" role="button">${ auteur.login }</a></p>
 
             </c:if>
           </c:forEach>

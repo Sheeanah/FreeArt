@@ -96,6 +96,36 @@ public class UserManager {
         }
     }
 
+    public static User GetByLogin(User u)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        Query q = session.createQuery("from User where login = :ulogin");
+
+        q.setParameter("ulogin", u.getLogin());
+
+
+        List user = q.list();
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        if(user.size() == 0)
+        {
+            return null;
+        }
+        else
+        {
+            return (User)user.get(0);
+        }
+    }
+
     public static List<User> getAll()
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

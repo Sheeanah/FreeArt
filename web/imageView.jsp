@@ -14,7 +14,13 @@
     <p>Titre : ${image.titre}</p>
     <p>Catégorie : <a href="/Categorie/${categorie.label}">${categorie.label}</a></p>
     <p>Auteur : ${auteur.login}</p>
+    <p>
+    <form method="post">
+      <input type="hidden" value="${image.id}" name="image_id_panier" id="image_id_panier">
+      <input type="submit" class="btn btn-default" role="button" value="Ajouter au panier">
+    </form>
 
+    </p>
   </div>
   <div class="col-sm-8">
     <a class="thumbnail"><img class="img-responsive" src="${image.image}"></a>
