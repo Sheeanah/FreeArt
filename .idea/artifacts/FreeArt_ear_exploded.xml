@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-ear" name="FreeArt:ear exploded">
+  <artifact type="exploded-war" name="FreeArt:ear exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/FreeArt_ear_exploded</output-path>
     <root id="root">
       <element id="javaee-facet-resources" facet="FreeArt/javaeeApplication/javaEEApplication" />
@@ -8,6 +8,8 @@
       </element>
       <element id="directory" name="lib">
         <element id="library" level="project" name="Hibernate 4.2.2-4.2.2 (2)" />
+        <element id="library" level="project" name="JPA 2.0-2.0" />
+        <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
       </element>
     </root>
   </artifact>

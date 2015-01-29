@@ -46,8 +46,21 @@ public class FilterLoadCategories implements javax.servlet.Filter {
                 {
                     if(cookie!=null && cookie!="")
                     {
-                        cookie = cookie+"/"+i.getId();
-                        setCookie(response, "Panier", cookie, COOKIE_MAX_AGE);
+                        String str[] = cookie.split("/");
+                        boolean exists = false;
+                        for(String s : str)
+                        {
+                            if(s.equals(i.getId()+""))
+                            {
+                                exists = true;
+                            }
+                        }
+                        if(!exists)
+                        {
+                            cookie = cookie+"/"+i.getId();
+                            setCookie(response, "Panier", cookie, COOKIE_MAX_AGE);
+                        }
+
                     }
                     else
                     {

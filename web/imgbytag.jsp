@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Kylian
-  Date: 22/01/2015
-  Time: 16:11
+  Date: 29/01/2015
+  Time: 14:14
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -25,15 +25,7 @@
 
 </style>
 
-<c:if test="${ elem_panier eq 0  }">
-<p class="well">Le panier est vide</p>
-</c:if>
-
-
 <div class="container">
-  <c:if test="${ elem_panier > 0  }">
-    <div class="row"><a href="/Download" class="btn btn-success btn-block">Télécharger le contenu du panier</a></div><br>
-  </c:if>
   <c:set var="cpt" value="4" scope="page"/>
   <c:set var="pagination" value="0" scope="page"/>
   <c:forEach items="${ images }" var="item">
@@ -54,13 +46,14 @@
             <p>${ item.description }</p>
 
 
-            <c:forEach items="${ categoriesMenu }" var="categ">
-              <c:if test="${ item.categorie == categ.id}">
+            <c:forEach items="${ categoriesMenu }" var="cat">
+              <c:if test="${ item.categorie == cat.id}">
 
-                <p>Catégorie : <a href="/Categorie/${ categ.label }" class="btn btn-primary" role="button">${ categ.label }</a></p>
+                <p>Catégorie : <a href="/Categorie/${ cat.label }" class="btn btn-primary" role="button">${ cat.label }</a></p>
 
               </c:if>
             </c:forEach>
+
             <c:forEach items="${ users }" var="auteur">
               <c:if test="${ item.auteur == auteur.id}">
 
@@ -80,8 +73,8 @@
 
             <p>
             <form method="post">
-              <input type="hidden" value="${item.id}" name="image_id_panier_remove" id="image_id_panier_remove">
-              <input type="submit" class="btn btn-danger" role="button" value="Enlever du panier">
+              <input type="hidden" value="${item.id}" name="image_id_panier" id="image_id_panier">
+              <input type="submit" class="btn btn-default" role="button" value="Ajouter au panier">
             </form>
 
             </p>
@@ -111,7 +104,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Panier/${currentPage - 1}" aria-label="Previous">
+          <a href="/Categorie/${currentTag}/${currentPage - 1}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -124,7 +117,7 @@
           <li class="active"><a href="#">${i}</a></li>
         </c:when>
         <c:otherwise>
-          <li><a href="/Panier/${i}">${i}</a></li>
+          <li><a href="/Categorie/${currentTag}/${i}">${i}</a></li>
         </c:otherwise>
       </c:choose>
     </c:forEach>
@@ -138,7 +131,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Panier/${currentPage + 1}" aria-label="Next">
+          <a href="/Categorie/${currentTag}/${currentPage + 1}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

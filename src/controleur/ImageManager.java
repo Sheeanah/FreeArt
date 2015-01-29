@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -109,6 +110,34 @@ public class ImageManager {
             sessionFactory.close();
         }
         return images;
+    }
+
+    public static List<modele.Image> GetByTag(Tag tag)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List imagesTag = TagManager.GetAllAssociation();
+
+        List imageByTag = new ArrayList<modele.Image>();
+
+        for(Imagetag itag : (List<Imagetag>)imagesTag)
+        {
+            if(itag.getTagid() == tag.getId())
+            {
+                imageByTag.add(GetById(itag.getImageid()));
+            }
+        }
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        return imageByTag;
     }
 
     public static List<modele.Image> GetByAuteur(int auteur)

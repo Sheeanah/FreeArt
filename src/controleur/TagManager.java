@@ -47,6 +47,27 @@ public class TagManager {
         return t;
     }
 
+    public static Tag GetByName(Tag tag)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        List tags = session
+                .createQuery("from Tag where label = :label")
+                .setParameter("label", tag.getLabel())
+                .list(); // Eager fetch the collection so we can use it detached
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+        return (Tag)tags.get(0);
+    }
+
     public static boolean Exists(Tag tag)
     {
         SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();

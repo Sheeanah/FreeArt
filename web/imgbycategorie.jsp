@@ -57,7 +57,7 @@
         <c:forEach items="${ imagetag }" var="imagetag">
           <c:forEach items="${ tags }" var="tag">
             <c:if test="${ (item.id == imagetag.imageid) && (tag.id == imagetag.tagid)  }">
-              <a href="#" class="btn btn-default" role="button"><span class="glyphicon glyphicon-tags"></span> ${tag.label}</a>
+              <a href="/Tag/${tag.label}" class="btn btn-default" role="button"><span class="glyphicon glyphicon-tags"></span> ${tag.label}</a>
             </c:if>
           </c:forEach>
         </c:forEach>

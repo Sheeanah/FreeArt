@@ -1,6 +1,8 @@
 package controleur;
 
 import modele.Categorie;
+import modele.Imagetag;
+import modele.Tag;
 import modele.User;
 
 import javax.servlet.ServletException;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Kylian on 23/01/2015.
@@ -54,7 +57,10 @@ public class ImageViewer extends HttpServlet {
         request.setAttribute("image", currentImage);
         request.setAttribute("categorie", imageCategorie);
         request.setAttribute("auteur", auteur);
-
+        List imgtag = TagManager.GetAllAssociation();
+        request.setAttribute("imagetag",(List<Imagetag>) imgtag);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
         this.getServletContext().getRequestDispatcher( "/imageView.jsp" ).forward(request, response); //On redurige vers la page d'accueil
 
 
@@ -100,7 +106,10 @@ public class ImageViewer extends HttpServlet {
         request.setAttribute("image", currentImage);
         request.setAttribute("categorie", imageCategorie);
         request.setAttribute("auteur", auteur);
-
+        List imgtag = TagManager.GetAllAssociation();
+        request.setAttribute("imagetag",(List<Imagetag>) imgtag);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
         this.getServletContext().getRequestDispatcher( "/imageView.jsp" ).forward(request, response); //On redurige vers la page d'accueil
 
 
