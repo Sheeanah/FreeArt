@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Kylian
-  Date: 22/01/2015
-  Time: 16:11
+  Date: 29/01/2015
+  Time: 18:22
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -45,13 +45,7 @@
             <h3>${ item.titre }</h3>
             <p>${ item.description }</p>
 
-            <c:forEach items="${ categoriesMenu }" var="categ">
-              <c:if test="${ item.categorie == categ.id}">
 
-                <p>Catégorie : <a href="/Categorie/${ categ.label }" class="btn btn-primary" role="button">${ categ.label }</a></p>
-
-              </c:if>
-            </c:forEach>
             <c:forEach items="${ users }" var="auteur">
               <c:if test="${ item.auteur == auteur.id}">
 
@@ -74,7 +68,10 @@
               <input type="hidden" value="${item.id}" name="image_id_panier" id="image_id_panier">
               <input type="submit" class="btn btn-default" role="button" value="Ajouter au panier">
             </form>
-
+            <form method="post">
+              <input type="hidden" value="${item.id}" name="image_id_delete">
+              <input type="submit" class="btn btn-danger btn-block" role="button" value="Supprimer">
+            </form>
             </p>
           </div>
         </div>
@@ -102,7 +99,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Auteur/${currentAuteur}/${currentPage - 1}" aria-label="Previous">
+          <a href="/MyAccount/${currentPage - 1}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -115,7 +112,7 @@
           <li class="active"><a href="#">${i}</a></li>
         </c:when>
         <c:otherwise>
-          <li><a href="/Auteur/${currentAuteur}/${i}">${i}</a></li>
+          <li><a href="/MyAccount/${i}">${i}</a></li>
         </c:otherwise>
       </c:choose>
     </c:forEach>
@@ -129,7 +126,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Auteur/${currentAuteur}/${currentPage + 1}" aria-label="Next">
+          <a href="/MyAccount/${currentPage + 1}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

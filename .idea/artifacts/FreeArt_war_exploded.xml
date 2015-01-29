@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="FreeArt" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Hibernate 4.2.2-4.2.2 (2)" />
+          <element id="library" level="project" name="JPA 2.0-2.0" />
+          <element id="library" level="project" name="Hibernate 4.2.2-4.2.2" />
+        </element>
       </element>
     </root>
   </artifact>

@@ -1,5 +1,9 @@
-package controleur;
+package Servlet;
 
+import controleur.CategorieManager;
+import controleur.ImageManager;
+import controleur.TagManager;
+import controleur.UserManager;
 import modele.*;
 
 import javax.servlet.ServletException;

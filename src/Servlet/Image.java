@@ -1,4 +1,4 @@
-package controleur;
+package Servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,6 +17,10 @@ public class Image extends HttpServlet {
 
     public static final int DEFAULT_BUFFER_SIZE = 10240;
     public static final int TAILLE_TAMPON = 10240;
+
+
+    //Cette servlet est obligatoire car le serveur d'application ne peux pas récupèrer les images qui sont hors du conteneur d'application
+    //Il faut donc aller les chercher a la main et écrire le contenu de l'image dans le flux HTTP
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -53,7 +57,7 @@ public class Image extends HttpServlet {
         response.setContentType(type);
         response.setHeader("Content-Length", String.valueOf(fichier.length()));
 
-        // Write image content to response.
+        // Ecrit le contenu de l'image dans la reponse HTTP.
         Files.copy(fichier.toPath(), response.getOutputStream());
     }
 }

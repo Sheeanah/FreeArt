@@ -1,5 +1,6 @@
-package controleur;
+package Servlet;
 
+import controleur.ImageManager;
 import modele.*;
 import modele.Image;
 
@@ -38,9 +39,13 @@ public class Download extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        List<modele.Image> images = new ArrayList<Image>();
+        List<modele.Image> images = new ArrayList<modele.Image>();
         for(String s : cookie.split("/")) {
-            images.add(ImageManager.GetById(Integer.parseInt(s)));
+            if(ImageManager.GetById(Integer.parseInt(s))!=null)
+            {
+                images.add(ImageManager.GetById(Integer.parseInt(s)));
+            }
+
         }
         imageList = new ArrayList<String>();
 
@@ -165,13 +170,13 @@ public class Download extends HttpServlet {
 
 
     /**
-     * Format the file path for zip
-     * @param file file path
-     * @return Formatted file path
+     Permet de faire de formatter le nom du fichier
      */
     private String generateZipEntry(String file){
         return file.substring(SOURCE_FOLDER.length()+1, file.length());
     }
+
+        //Récupère le nom du zip
 
     private void getZipName()
     {

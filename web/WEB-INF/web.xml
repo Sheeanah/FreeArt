@@ -27,11 +27,12 @@
     <filter-mapping>
         <filter-name>FilterCo</filter-name>
         <url-pattern>/Upload</url-pattern>
+        <url-pattern>/MyAccount</url-pattern>
     </filter-mapping>
 
     <servlet>
         <servlet-name>Upload</servlet-name>
-        <servlet-class>controleur.Upload</servlet-class>
+        <servlet-class>Servlet.Upload</servlet-class>
         <init-param>
             <param-name>chemin</param-name>
             <param-value>/fichiers/</param-value>
@@ -45,7 +46,7 @@
     </servlet>
     <servlet>
         <servlet-name>Image</servlet-name>
-        <servlet-class>controleur.Image</servlet-class>
+        <servlet-class>Servlet.Image</servlet-class>
         <init-param>
             <param-name>chemin</param-name>
             <param-value>/fichiers/</param-value>
@@ -53,7 +54,7 @@
     </servlet>
     <servlet>
         <servlet-name>CategorieContent</servlet-name>
-        <servlet-class>controleur.CategorieContent</servlet-class>
+        <servlet-class>Servlet.CategorieContent</servlet-class>
 
     </servlet>
     <servlet>

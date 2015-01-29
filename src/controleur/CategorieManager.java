@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Kylian on 20/01/2015.
  */
-public class CategorieManager {
+public class CategorieManager { //EJBCategorie
 
     public static List<Categorie> getAll()
     {

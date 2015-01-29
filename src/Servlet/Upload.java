@@ -1,5 +1,8 @@
-package controleur;
+package Servlet;
 
+import controleur.CategorieManager;
+import controleur.ImageManager;
+import controleur.TagManager;
 import eu.medsea.mimeutil.MimeUtil;
 import modele.Categorie;
 import modele.Imagetag;

@@ -1,5 +1,8 @@
-package controleur;
+package Servlet;
 
+import controleur.ImageManager;
+import controleur.TagManager;
+import controleur.UserManager;
 import modele.*;
 
 import javax.servlet.ServletException;
@@ -12,46 +15,50 @@ import java.net.URLDecoder;
 import java.util.List;
 
 /**
- * Created by Kylian on 29/01/2015.
+ * Created by Kylian on 27/01/2015.
  */
-@WebServlet("/Tag/*")
-public class TagView extends HttpServlet {
+@WebServlet("/Auteur/*")
+
+//Servlet qui va servir à afficher les images d'un auteur spécifique
+
+public class Auteur extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String tag_label = request.getPathInfo();
-        if ( tag_label == null || "/".equals( tag_label ) ) {
-    /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
+        String auteur = request.getPathInfo();//On récupère le paramètre passé à l'URL
+        if ( auteur == null || "/".equals( auteur ) ) {
+            /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
-        tag_label = URLDecoder.decode(tag_label, "UTF8");
+        //Potentillement on peut avoir des caractères spéciaux
+        auteur = URLDecoder.decode(auteur,"UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = tag_label.split("/");
+        String str[] = auteur.split("/");
 
-        if(str.length > 3)
+        if(str.length > 3)//Le nombre de paramètre passé est incorrect
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        tag_label = str[1];
+        auteur = str[1];
 
-        //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        Tag tag = new Tag();
-        tag.setLabel(tag_label);
-        if(!TagManager.Exists(tag))
+        //Maintenant on connaît l'auteur que souhaite visualiser l'utilisateur on regarde si cet auteur existe
+        User u = new User();
+        u.setLogin(auteur);
+        if(!UserManager.Exists(u))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        tag = TagManager.GetByName(tag);
+        u = UserManager.GetByLogin(u);
 
-        List<modele.Image> images = ImageManager.GetByTag(tag);
+        List<modele.Image> images = ImageManager.GetByAuteur(u.getId());
+        //On récupère nos images et on paramètre la pagination
         if(images.size()<12)
         {
 
@@ -89,7 +96,7 @@ public class TagView extends HttpServlet {
                 return;
             }
         }
-
+         //On transmet les paramètres a la requete afin de les retrouver dans la jsp
 
         request.setAttribute("images",images);
         request.setAttribute("maxPage",maxPage);
@@ -97,29 +104,29 @@ public class TagView extends HttpServlet {
         request.setAttribute("minInter",minInter);
 
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentTag",tag_label);
+        request.setAttribute("currentAuteur",auteur);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
-        List tagtag = TagManager.getAllTag();
-        request.setAttribute("tags",(List<Tag>) tagtag);
-        this.getServletContext().getRequestDispatcher( "/imgbytag.jsp" ).forward(request, response);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
+        this.getServletContext().getRequestDispatcher( "/imgbyauteur.jsp" ).forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String tag_label = request.getPathInfo();
-        if ( tag_label == null || "/".equals( tag_label ) ) {
+        String auteur = request.getPathInfo();
+        if ( auteur == null || "/".equals( auteur ) ) {
     /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        tag_label = URLDecoder.decode(tag_label, "UTF8");
+        auteur = URLDecoder.decode(auteur,"UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = tag_label.split("/");
+        String str[] = auteur.split("/");
 
         if(str.length > 3)
         {
@@ -127,20 +134,20 @@ public class TagView extends HttpServlet {
             return;
         }
 
-        tag_label = str[1];
+        auteur = str[1];
 
         //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        Tag tag = new Tag();
-        tag.setLabel(tag_label);
-        if(!TagManager.Exists(tag))
+        User u = new User();
+        u.setLogin(auteur);
+        if(!UserManager.Exists(u))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-         tag = TagManager.GetByName(tag);
+        u = UserManager.GetByLogin(u);
 
-        List<modele.Image> images = ImageManager.GetByTag(tag);
+        List<modele.Image> images = ImageManager.GetByAuteur(u.getId());
         if(images.size()<12)
         {
 
@@ -186,12 +193,12 @@ public class TagView extends HttpServlet {
         request.setAttribute("minInter",minInter);
 
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentTag",tag_label);
+        request.setAttribute("currentAuteur",auteur);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
-        List tagtag = TagManager.getAllTag();
-        request.setAttribute("tags",(List<Tag>) tagtag);
-        this.getServletContext().getRequestDispatcher( "/imgbytag.jsp" ).forward(request, response);
+        List tag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tag);
+        this.getServletContext().getRequestDispatcher( "/imgbyauteur.jsp" ).forward(request, response);
     }
 
     private static boolean isInteger(String s) {

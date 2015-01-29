@@ -12,6 +12,9 @@ import java.util.Map;
 /**
  * Created by Dorian on 16/01/2015.
  */
+
+//Classe ninja créée par Hibernate
+
 public class Main {
     private static final SessionFactory ourSessionFactory;
     private static final ServiceRegistry serviceRegistry;

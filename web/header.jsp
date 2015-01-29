@@ -42,6 +42,7 @@
         <c:choose>
           <c:when test="${!empty sessionScope.User}">
             <li><a href="/Upload"><span class="glyphicon glyphicon-upload"></span> Ajouter une image</a></li>
+            <li><a href="/MyAccount"><span class="glyphicon glyphicon-user"></span> Mon compte</a></li>
           </c:when>
           <c:otherwise>
             <li><a href="/CreateUser"><span class="glyphicon glyphicon-plus"></span> Créer un compte</a></li>
@@ -82,15 +83,17 @@
           </form>
         </c:when>
         <c:otherwise>
+
       <form class="navbar-form navbar-left" method="post" action="/Deconnect">
+
         <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-off"></span> ${sessionScope.User.login} (se deconnecter) </button>
       </form>
         </c:otherwise>
       </c:choose>
 
-      <form class="navbar-form navbar-right" role="search" method="post" action="/Recherche/search.jsp">
+      <form class="navbar-form navbar-right" role="search" method="post" action="/Recherche">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Rechercher">
+          <input type="text" class="form-control" name="recherche" placeholder="Rechercher">
         </div>
         <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span> Rechercher</button>
       </form>

@@ -1,9 +1,8 @@
 package modele;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Dorian on 16/01/2015.
@@ -12,6 +11,10 @@ import javax.persistence.Id;
 public class Tag {
     private int id;
     private String label;
+
+
+
+    private Set<Tag> images = new HashSet<Tag>(0);
 
     @Id
     @Column(name = "id")
@@ -52,4 +55,6 @@ public class Tag {
         result = 31 * result + (label != null ? label.hashCode() : 0);
         return result;
     }
+
+
 }

@@ -33,6 +33,13 @@
 <div class="container">
   <c:if test="${ elem_panier > 0  }">
     <div class="row"><a href="/Download" class="btn btn-success btn-block">Télécharger le contenu du panier</a></div><br>
+    <div class="row">
+      <form method="post" action="/Panier">
+        <input type="hidden" name="viderPanier" value="8">
+      <input type="submit" class="btn btn-danger btn-block" value="Vider le panier">
+      </form>
+    </div>
+    <br>
   </c:if>
   <c:set var="cpt" value="4" scope="page"/>
   <c:set var="pagination" value="0" scope="page"/>

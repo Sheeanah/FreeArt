@@ -104,7 +104,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Categorie/${currentTag}/${currentPage - 1}" aria-label="Previous">
+          <a href="/Tag/${currentTag}/${currentPage - 1}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
@@ -117,7 +117,7 @@
           <li class="active"><a href="#">${i}</a></li>
         </c:when>
         <c:otherwise>
-          <li><a href="/Categorie/${currentTag}/${i}">${i}</a></li>
+          <li><a href="/Tag/${currentTag}/${i}">${i}</a></li>
         </c:otherwise>
       </c:choose>
     </c:forEach>
@@ -131,7 +131,7 @@
       </c:when>
       <c:otherwise>
         <li>
-          <a href="/Categorie/${currentTag}/${currentPage + 1}" aria-label="Next">
+          <a href="/Tag/${currentTag}/${currentPage + 1}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>

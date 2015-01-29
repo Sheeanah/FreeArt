@@ -1,6 +1,11 @@
-package controleur;
+package Servlet;
 
-import modele.*;
+import controleur.CategorieManager;
+import controleur.ImageManager;
+import controleur.TagManager;
+import modele.Categorie;
+import modele.Imagetag;
+import modele.Tag;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,25 +17,28 @@ import java.net.URLDecoder;
 import java.util.List;
 
 /**
- * Created by Kylian on 27/01/2015.
+ * Created by Kylian on 22/01/2015.
  */
-@WebServlet("/Auteur/*")
-public class Auteur extends HttpServlet {
+@WebServlet(name = "CategorieContent")
+
+//Même fonctionnement que la servlet auteur
+
+public class CategorieContent extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String auteur = request.getPathInfo();
-        if ( auteur == null || "/".equals( auteur ) ) {
+        String categorie_label = request.getPathInfo();
+        if ( categorie_label == null || "/".equals( categorie_label ) ) {
     /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        auteur = URLDecoder.decode(auteur,"UTF8");
+        categorie_label = URLDecoder.decode(categorie_label,"UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = auteur.split("/");
+        String str[] = categorie_label.split("/");
 
         if(str.length > 3)
         {
@@ -38,20 +46,20 @@ public class Auteur extends HttpServlet {
             return;
         }
 
-        auteur = str[1];
+        categorie_label = str[1];
 
         //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        User u = new User();
-        u.setLogin(auteur);
-        if(!UserManager.Exists(u))
+        Categorie c = new Categorie();
+        c.setLabel(categorie_label);
+        if(!CategorieManager.Exists(c))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        u = UserManager.GetByLogin(u);
+        c = CategorieManager.GetByName(categorie_label);
 
-        List<modele.Image> images = ImageManager.GetByAuteur(u.getId());
+        List<modele.Image> images = ImageManager.GetByCategorie(c.getId());
         if(images.size()<12)
         {
 
@@ -61,7 +69,7 @@ public class Auteur extends HttpServlet {
         {
             maxPage = (int) Math.ceil(images.size() * 1.0 / imageParPage);
         }
-
+        String debug = images.size()+" et categ = "+categorie_label;
         String page ="";
         int pageDemandee = 1;
         if(str.length == 3)
@@ -95,31 +103,31 @@ public class Auteur extends HttpServlet {
         request.setAttribute("maxPage",maxPage);
         request.setAttribute("maxInter",maxInter);
         request.setAttribute("minInter",minInter);
-
+        request.setAttribute("debug",debug);
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentAuteur",auteur);
+        request.setAttribute("currentCategorie",categorie_label);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
         List tag = TagManager.getAllTag();
         request.setAttribute("tags",(List<Tag>) tag);
-        this.getServletContext().getRequestDispatcher( "/imgbyauteur.jsp" ).forward(request, response);
+        this.getServletContext().getRequestDispatcher( "/imgbycategorie.jsp" ).forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String auteur = request.getPathInfo();
-        if ( auteur == null || "/".equals( auteur ) ) {
+        String categorie_label = request.getPathInfo();
+        if ( categorie_label == null || "/".equals( categorie_label ) ) {
     /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        auteur = URLDecoder.decode(auteur,"UTF8");
+        categorie_label = URLDecoder.decode(categorie_label,"UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = auteur.split("/");
+        String str[] = categorie_label.split("/");
 
         if(str.length > 3)
         {
@@ -127,20 +135,20 @@ public class Auteur extends HttpServlet {
             return;
         }
 
-        auteur = str[1];
+        categorie_label = str[1];
 
         //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        User u = new User();
-        u.setLogin(auteur);
-        if(!UserManager.Exists(u))
+        Categorie c = new Categorie();
+        c.setLabel(categorie_label);
+        if(!CategorieManager.Exists(c))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        u = UserManager.GetByLogin(u);
+        c = CategorieManager.GetByName(categorie_label);
 
-        List<modele.Image> images = ImageManager.GetByAuteur(u.getId());
+        List<modele.Image> images = ImageManager.GetByCategorie(c.getId());
         if(images.size()<12)
         {
 
@@ -150,7 +158,7 @@ public class Auteur extends HttpServlet {
         {
             maxPage = (int) Math.ceil(images.size() * 1.0 / imageParPage);
         }
-
+        String debug = images.size()+" et categ = "+categorie_label;
         String page ="";
         int pageDemandee = 1;
         if(str.length == 3)
@@ -184,14 +192,15 @@ public class Auteur extends HttpServlet {
         request.setAttribute("maxPage",maxPage);
         request.setAttribute("maxInter",maxInter);
         request.setAttribute("minInter",minInter);
-
+        request.setAttribute("debug",debug);
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentAuteur",auteur);
+        request.setAttribute("currentCategorie",categorie_label);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
         List tag = TagManager.getAllTag();
         request.setAttribute("tags",(List<Tag>) tag);
-        this.getServletContext().getRequestDispatcher( "/imgbyauteur.jsp" ).forward(request, response);
+        this.getServletContext().getRequestDispatcher( "/imgbycategorie.jsp" ).forward(request, response);
+
     }
 
     private static boolean isInteger(String s) {
@@ -200,5 +209,4 @@ public class Auteur extends HttpServlet {
         catch(NumberFormatException nfe){ isValid = false; }
         return isValid;
     }
-
 }

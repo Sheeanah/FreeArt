@@ -14,7 +14,7 @@ import java.io.IOException;
 public class FilterCo implements javax.servlet.Filter {
     public void destroy() {
     }
-
+    //Filtre empêchant un utilisateur non connecté de Upload une image
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;

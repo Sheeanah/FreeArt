@@ -1,10 +1,9 @@
 package modele;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Dorian on 16/01/2015.
@@ -18,6 +17,10 @@ public class Image {
     private String description;
     private int auteur;
     private int categorie;
+
+
+
+    private Set<Tag> tags = new HashSet<Tag>(0);
 
     @Id
     @Column(name = "id")
@@ -114,4 +117,6 @@ public class Image {
     public void setCategorie(int categorie) {
         this.categorie = categorie;
     }
+
+
 }

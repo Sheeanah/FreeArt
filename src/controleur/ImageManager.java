@@ -2,6 +2,7 @@ package controleur;
 
 import modele.*;
 import modele.Image;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -187,6 +188,77 @@ public class ImageManager {
         {
             return null;
         }
+    }
+
+    public static void Delete(modele.Image i)
+    {
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        Query q2 = session.createQuery("delete Imagetag where imageid = "+i.getId());
+         q2.executeUpdate();
+
+        Query q = session.createQuery("delete Image where id = "+i.getId());
+
+        q.executeUpdate();
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+
+    }
+
+    public static List<modele.Image> Search(String search)
+    {
+
+        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+        Session session = sessionFactory.openSession();
+
+        session.beginTransaction();
+
+        Tag t = new Tag();
+        t.setLabel(search);
+
+        List imageByTag = new ArrayList<modele.Image>();
+
+        if(TagManager.GetByName(t) != null)
+        {
+            t = TagManager.GetByName(t);
+            imageByTag = GetByTag(t);
+        }
+        List images = session
+                .createQuery("from Image fetch all properties where (titre like '%" + search + "%' OR description like '%"+search+"%')")
+
+                .list();
+
+        session.getTransaction().commit();
+        session.close();
+        if ( sessionFactory != null ) {
+            sessionFactory.close();
+        }
+
+        if(imageByTag.size()>0)
+        {
+            for(modele.Image i : (List<modele.Image>)imageByTag)
+            {
+                if(!images.contains(i))
+                {
+                    images.add(i);
+                }
+            }
+        }
+
+
+
+            return images;
+
+
+
     }
 
 }

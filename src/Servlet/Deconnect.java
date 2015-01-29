@@ -1,4 +1,4 @@
-package controleur;
+package Servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,9 +15,9 @@ import java.io.IOException;
 public class Deconnect extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        session.invalidate();
+        session.invalidate(); //On détruit la session
 
-
+        //On fait un redirection vers la page d'accueil
         response.sendRedirect( "/Home" );
     }
 

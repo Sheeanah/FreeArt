@@ -22,28 +22,43 @@ public class FilterLoadCategories implements javax.servlet.Filter {
 
     public void destroy() {
     }
-
+    //Ce filtre est appliqué au pattern /*
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException {
 
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) resp;
 
+        //On récupère toutes les catégories (pour les avoir dans le menu et aussi dans les jsp
+
         List categories = CategorieManager.getAll();
         request.setAttribute("categoriesMenu",(List<Categorie>) categories);
+
+        //On récupère tous nos utilisateurs pour y accéder dans nos jsp
         List users = UserManager.getAll();
         request.setAttribute("users",(List<User>) users);
+
+        //On traite les demande d'ajout ou non dans le panier
         String addToPanier = request.getParameter("image_id_panier");
         String removeFromPanier = request.getParameter("image_id_panier_remove");
         String cookie = getCookieValue(request, "Panier");
+        String vider = request.getParameter("viderPanier");
+        if(vider!=null)
+        {
+            if(!vider.isEmpty())
+            {
+                setCookie(response,"Panier","",0);
+            }
+        }
         if(!(addToPanier == null))
         {
             if(!addToPanier.isEmpty())
             {
-
+                //On récupère l'id de l'image a ajouter au panier
                 int image = Integer.parseInt(addToPanier);
                 modele.Image i = ImageManager.GetById(image);
                 if(i != null)
                 {
+                    //Si le cookie existe on le complète
                     if(cookie!=null && cookie!="")
                     {
                         String str[] = cookie.split("/");
@@ -64,6 +79,7 @@ public class FilterLoadCategories implements javax.servlet.Filter {
                     }
                     else
                     {
+                        //Sinon on créé le cookie
                         cookie=i.getId()+"";
                         setCookie( response, "Panier", cookie, COOKIE_MAX_AGE );
                     }
@@ -71,6 +87,7 @@ public class FilterLoadCategories implements javax.servlet.Filter {
             }
 
         }
+        //Pour enlever une image du panier
         if(!(removeFromPanier == null))
         {
             if(!(removeFromPanier.isEmpty()))
@@ -83,9 +100,6 @@ public class FilterLoadCategories implements javax.servlet.Filter {
                     boolean first_to_delete=false;
                     for(int i = 0;i<str.length;i++)
                     {
-
-
-
                         if(i==0 && Integer.parseInt(str[i])!=image && str.length == 1)
                         {
                             cookie = str[i];
@@ -134,11 +148,20 @@ public class FilterLoadCategories implements javax.servlet.Filter {
             }
 
         }
+
+        //Permet de connaître le nombre d'élément dans le panier
         if(cookie != null && cookie!="")
         {
-            String str[] = cookie.split("/");
+            int i=0;
+            for(String s : cookie.split("/")) {
+                if(ImageManager.GetById(Integer.parseInt(s))!=null)
+                {
+                    i++;
+                }
 
-            request.setAttribute("elem_panier",str.length);
+            }
+
+            request.setAttribute("elem_panier",i);
         }
         else
         {

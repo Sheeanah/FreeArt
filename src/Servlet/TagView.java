@@ -1,8 +1,8 @@
-package controleur;
+package Servlet;
 
-import modele.Categorie;
-import modele.Imagetag;
-import modele.Tag;
+import controleur.ImageManager;
+import controleur.TagManager;
+import modele.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,25 +14,28 @@ import java.net.URLDecoder;
 import java.util.List;
 
 /**
- * Created by Kylian on 22/01/2015.
+ * Created by Kylian on 29/01/2015.
  */
-@WebServlet(name = "CategorieContent")
-public class CategorieContent extends HttpServlet {
+@WebServlet("/Tag/*")
+
+//Meme principe que les autres servlet, on récupère les images ayant le taf spécifié
+
+public class TagView extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String categorie_label = request.getPathInfo();
-        if ( categorie_label == null || "/".equals( categorie_label ) ) {
+        String tag_label = request.getPathInfo();
+        if ( tag_label == null || "/".equals( tag_label ) ) {
     /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        categorie_label = URLDecoder.decode(categorie_label,"UTF8");
+        tag_label = URLDecoder.decode(tag_label, "UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = categorie_label.split("/");
+        String str[] = tag_label.split("/");
 
         if(str.length > 3)
         {
@@ -40,20 +43,20 @@ public class CategorieContent extends HttpServlet {
             return;
         }
 
-        categorie_label = str[1];
+        tag_label = str[1];
 
-        //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        Categorie c = new Categorie();
-        c.setLabel(categorie_label);
-        if(!CategorieManager.Exists(c))
+
+        Tag tag = new Tag();
+        tag.setLabel(tag_label);
+        if(!TagManager.Exists(tag))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        c = CategorieManager.GetByName(categorie_label);
+        tag = TagManager.GetByName(tag);
 
-        List<modele.Image> images = ImageManager.GetByCategorie(c.getId());
+        List<modele.Image> images = ImageManager.GetByTag(tag);
         if(images.size()<12)
         {
 
@@ -63,7 +66,7 @@ public class CategorieContent extends HttpServlet {
         {
             maxPage = (int) Math.ceil(images.size() * 1.0 / imageParPage);
         }
-        String debug = images.size()+" et categ = "+categorie_label;
+
         String page ="";
         int pageDemandee = 1;
         if(str.length == 3)
@@ -97,31 +100,31 @@ public class CategorieContent extends HttpServlet {
         request.setAttribute("maxPage",maxPage);
         request.setAttribute("maxInter",maxInter);
         request.setAttribute("minInter",minInter);
-        request.setAttribute("debug",debug);
+
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentCategorie",categorie_label);
+        request.setAttribute("currentTag",tag_label);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
-        List tag = TagManager.getAllTag();
-        request.setAttribute("tags",(List<Tag>) tag);
-        this.getServletContext().getRequestDispatcher( "/imgbycategorie.jsp" ).forward(request, response);
+        List tagtag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tagtag);
+        this.getServletContext().getRequestDispatcher( "/imgbytag.jsp" ).forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String categorie_label = request.getPathInfo();
-        if ( categorie_label == null || "/".equals( categorie_label ) ) {
+        String tag_label = request.getPathInfo();
+        if ( tag_label == null || "/".equals( tag_label ) ) {
     /* Si non, alors on envoie une erreur 404, qui signifie que la ressource demandée n'existe pas */
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        categorie_label = URLDecoder.decode(categorie_label,"UTF8");
+        tag_label = URLDecoder.decode(tag_label, "UTF8");
         int imageParPage = 12;
         int minInter=1; //Pour la pagination, le début de l'affichage
         int maxInter=12;   //la fin de l'affichage
         int maxPage=0;  //Le nombre de page maximux que l'on a
 
-        String str[] = categorie_label.split("/");
+        String str[] = tag_label.split("/");
 
         if(str.length > 3)
         {
@@ -129,20 +132,20 @@ public class CategorieContent extends HttpServlet {
             return;
         }
 
-        categorie_label = str[1];
+        tag_label = str[1];
 
         //Maintenant on connaît la catégorie que souhaite visualiser l'utilisateur on regarde si cette catégorie existe
-        Categorie c = new Categorie();
-        c.setLabel(categorie_label);
-        if(!CategorieManager.Exists(c))
+        Tag tag = new Tag();
+        tag.setLabel(tag_label);
+        if(!TagManager.Exists(tag))
         {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        c = CategorieManager.GetByName(categorie_label);
+         tag = TagManager.GetByName(tag);
 
-        List<modele.Image> images = ImageManager.GetByCategorie(c.getId());
+        List<modele.Image> images = ImageManager.GetByTag(tag);
         if(images.size()<12)
         {
 
@@ -152,7 +155,7 @@ public class CategorieContent extends HttpServlet {
         {
             maxPage = (int) Math.ceil(images.size() * 1.0 / imageParPage);
         }
-        String debug = images.size()+" et categ = "+categorie_label;
+
         String page ="";
         int pageDemandee = 1;
         if(str.length == 3)
@@ -186,15 +189,14 @@ public class CategorieContent extends HttpServlet {
         request.setAttribute("maxPage",maxPage);
         request.setAttribute("maxInter",maxInter);
         request.setAttribute("minInter",minInter);
-        request.setAttribute("debug",debug);
+
         request.setAttribute("currentPage",pageDemandee);
-        request.setAttribute("currentCategorie",categorie_label);
+        request.setAttribute("currentTag",tag_label);
         List imgtag = TagManager.GetAllAssociation();
         request.setAttribute("imagetag",(List<Imagetag>) imgtag);
-        List tag = TagManager.getAllTag();
-        request.setAttribute("tags",(List<Tag>) tag);
-        this.getServletContext().getRequestDispatcher( "/imgbycategorie.jsp" ).forward(request, response);
-
+        List tagtag = TagManager.getAllTag();
+        request.setAttribute("tags",(List<Tag>) tagtag);
+        this.getServletContext().getRequestDispatcher( "/imgbytag.jsp" ).forward(request, response);
     }
 
     private static boolean isInteger(String s) {
@@ -203,4 +205,5 @@ public class CategorieContent extends HttpServlet {
         catch(NumberFormatException nfe){ isValid = false; }
         return isValid;
     }
+
 }

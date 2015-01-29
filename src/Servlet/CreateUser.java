@@ -1,4 +1,4 @@
-package controleur;
+package Servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
 
+import controleur.UserManager;
 import modele.User;
 import org.hibernate.*;
 import org.hibernate.cfg.*;
@@ -16,6 +17,9 @@ import org.hibernate.cfg.*;
  * Created by Kylian on 18/01/2015.
  */
 @WebServlet("/CreateUser")
+
+//Permet de créer l'utilisateur en utilisant l'EJB UserManager
+
 public class CreateUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("userName");

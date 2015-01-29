@@ -65,7 +65,15 @@ public class TagManager {
         if ( sessionFactory != null ) {
             sessionFactory.close();
         }
-        return (Tag)tags.get(0);
+        if(tags.size()>0)
+        {
+            return (Tag)tags.get(0);
+        }
+        else
+        {
+            return null;
+        }
+
     }
 
     public static boolean Exists(Tag tag)
