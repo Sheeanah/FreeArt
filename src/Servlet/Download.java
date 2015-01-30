@@ -22,8 +22,11 @@ import java.util.zip.ZipOutputStream;
 @WebServlet("/Download")
 public class Download extends HttpServlet {
 
-    private  String OUTPUT_ZIP_FILE = "C:\\fichiers\\Zip";
-    private static final String SOURCE_FOLDER = "C:\\fichiers";
+    //private  String OUTPUT_ZIP_FILE = "C:\\fichiers\\Zip"; //WINDOWS
+    //private static final String SOURCE_FOLDER = "C:\\fichiers";   //WINDOWS
+    private  String OUTPUT_ZIP_FILE = "/fichiers/Zip";
+    private static final String SOURCE_FOLDER = "/fichiers";
+
     List<String> imageList;
     private static final int TAILLE_TAMPON = 10240;
 
@@ -98,7 +101,7 @@ public class Download extends HttpServlet {
             }
         }
 
-        response.getWriter().println("FICHIER PONDU : "+OUTPUT_ZIP_FILE);
+
 
 
     }
@@ -158,7 +161,8 @@ public class Download extends HttpServlet {
         for(modele.Image i : images)
         {
 
-            String path = SOURCE_FOLDER + "\\" +i.getImage().split("/")[2];
+            //String path = SOURCE_FOLDER + "\\" +i.getImage().split("/")[2]; //WINDOWS
+            String path = SOURCE_FOLDER + "/" +i.getImage().split("/")[2];
             node=new File(path);
             //add file only
             if(node.isFile()){
@@ -180,8 +184,10 @@ public class Download extends HttpServlet {
 
     private void getZipName()
     {
-        OUTPUT_ZIP_FILE = "C:\\fichiers\\Zip";
-        OUTPUT_ZIP_FILE = OUTPUT_ZIP_FILE + "\\";
+        //OUTPUT_ZIP_FILE = "C:\\fichiers\\Zip";    //WINDOWS
+        OUTPUT_ZIP_FILE = "/fichiers/Zip";
+        //OUTPUT_ZIP_FILE = OUTPUT_ZIP_FILE + "\\"; //WINDOWS
+        OUTPUT_ZIP_FILE = OUTPUT_ZIP_FILE + "/";
         String fileName = "ZIP_1.zip";
         File f = new File(OUTPUT_ZIP_FILE+fileName);
         int i = 1;

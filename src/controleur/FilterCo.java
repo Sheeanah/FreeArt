@@ -20,15 +20,22 @@ public class FilterCo implements javax.servlet.Filter {
         HttpServletResponse response = (HttpServletResponse) resp;
 
         HttpSession session = request.getSession(false);
-
-        if(session.getAttribute("User")==null)
+        if(session != null)
         {
-            response.sendRedirect( "/Home" );
+            if(session.getAttribute("User")==null)
+            {
+                response.sendRedirect( "/Home" );
+            }
+            else
+            {
+                chain.doFilter(req, resp);
+            }
         }
         else
         {
-            chain.doFilter(req, resp);
+            response.sendRedirect( "/Home" );
         }
+
     }
 
     public void init(FilterConfig config) throws ServletException {
